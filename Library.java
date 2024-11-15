@@ -11,6 +11,12 @@ public class Library extends Building{
       this.collection = new Hashtable<>();
       System.out.println("You have built a library: 📖");
     }
+
+    public Library(String name, String address) {
+      super(name, address);
+      this.collection = new Hashtable<>();
+      System.out.println("You have built a library: 📖");
+    }
     
     class NotAvailableException extends RuntimeException {
       public NotAvailableException(String s){
@@ -64,7 +70,6 @@ public class Library extends Building{
       }
     }
 
-    
 
     // Methods (modify value/status)
 
@@ -91,7 +96,6 @@ public class Library extends Building{
 
     public void returnBook(String title){
       // check that book is part of the collection
-      //if (!this.containsTitle(title)) { throw RuntimeException(title + " is not part of " + this.getName() + "'s collection.");}
       // check that book has been checked out
       try {
         if (!this.containsTitle(title)) {
@@ -138,9 +142,39 @@ public class Library extends Building{
       });
     }
 
+    public void printCollection(Boolean available){
+      // prints out the entire collection in an easy-to-read way (including checkout status)
+      if (available == true) {
+        System.out.println("Available books in the " + this.getName() + " Collection:");
+        this.collection.forEach((title, value) -> {
+          if (this.isAvailable(title)) {
+            System.out.println(title + " is available.");
+          }
+        });
+      }
+      else {
+        System.out.println("Checked out books in the " + this.getName() + " Collection:");
+        this.collection.forEach((title, value) -> {
+          if (!this.isAvailable(title)) {
+            System.out.println(title + " is checked out.");
+          }
+        }); 
+      }
+    }
+
     public String toString() {
       return super.toString();
     }
+
+    public void goToFloor(int floorNum){
+      super.goToFloor(floorNum);
+    }
+
+    public void showOptions() {
+      super.showOptions();
+      System.out.println(" + addTitle(String title) \n + removeTitle(String title) \n + checkOut(String title) \n + returnBook(String title)\n + isAvailable(String title)\n + containsTitle(String title)\n + printCollection()\n + printCollection(Boolean available)");
+    }
+
 
     public static void main(String[] args) {
       Library neilson = new Library("Neilson Library", "7 Neilson Drive, Northampton, MA 01063", 4);
@@ -148,6 +182,15 @@ public class Library extends Building{
       neilson.addTitle("Uglies by Scott Westerfeld");
       neilson.addTitle("The Moth Keeper by K. O'Neill");
       neilson.printCollection();
+      System.out.println(neilson.toString());
+      neilson.checkOut("Goblin Mode by McKayla Coyle");
+      neilson.printCollection(true);
+      neilson.printCollection(false);
+      Library josten = new Library("Josten Performing Arts Library", "Mendenhall Center, 122 Green St, Northampton, MA 01063");
+      System.out.println(josten.toString());
+      neilson.showOptions();
+      neilson.enter();
+      neilson.goToFloor(3);
     }
   
   }
